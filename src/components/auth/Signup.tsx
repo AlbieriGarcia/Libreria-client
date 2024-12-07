@@ -9,11 +9,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useForm } from "react-hook-form";  
-import { signin } from "@/libs/Login/AuthRequest";
-import toast, { Toaster } from 'react-hot-toast';
+import { useForm } from "react-hook-form"; 
+import { signup } from "@/libs/Login/AuthRequest";
+import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-
 
 const Login = () => {
   const router = useRouter();
@@ -24,14 +23,12 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  
   const onSubmit = (data: any) => {
-    signin(data).then((response) => {
-      
-      if(response.success){
+    signup(data).then((response) => {
+      if (response.success) {
         toast.success(response.message);
 
-        router.push("/");
+        router.push("/login");
       } else {
         toast.error(response.message);
       }
@@ -43,13 +40,30 @@ const Login = () => {
       <CardHeader
         title={
           <Typography variant="h5" component="h1" align="center">
-            Has Login para Continuar
+            Registrate
           </Typography>
         }
         className="pb-2"
       />
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <TextField
+            fullWidth
+            label="username"
+            type="string"
+            variant="outlined"
+            {...register("username", {
+              required: "El Nombre de usuario es requerido",
+              minLength: {
+                value: 3,
+                message:
+                  "El Nombre de usuario debe tener al menos 3 caracteres",
+              },
+            })}
+            error={!!errors.username}
+            helperText={String(errors.username?.message ?? "")}
+          />
+
           <TextField
             fullWidth
             label="Email"
@@ -62,8 +76,8 @@ const Login = () => {
                 message: "El email no es válido",
               },
             })}
-            error={!!errors.email}  
-            helperText={String(errors.email?.message ?? '')} 
+            error={!!errors.email}
+            helperText={String(errors.email?.message ?? "")}
           />
 
           <TextField
@@ -78,8 +92,8 @@ const Login = () => {
                 message: "La contraseña debe tener al menos 6 caracteres",
               },
             })}
-            error={!!errors.password}  
-            helperText={String(errors.password?.message ?? '')}  
+            error={!!errors.password}
+            helperText={String(errors.password?.message ?? "")}
           />
 
           <Button
@@ -89,7 +103,7 @@ const Login = () => {
             size="large"
             color="primary"
           >
-            Continuar
+            Registrarme
           </Button>
           <Divider />
           <Typography
@@ -97,14 +111,14 @@ const Login = () => {
             align="center"
             className="mt-2 text-gray-600"
           >
-            No tienes una cuenta?{" "}
+            ya tienes una cuenta?{" "}
             <span
               onClick={() => {
-                router.push("/signup");
+                router.push("/login");
               }}
               className="text-sky-700 hover:underline cursor-pointer"
             >
-              Registrarme
+              Login
             </span>
           </Typography>
         </form>
