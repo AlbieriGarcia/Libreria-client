@@ -39,3 +39,19 @@ export const signup = async (params) => {
         throw new Error(error)
       }
 }
+
+export const verifyToken = async (token) => {
+    try {
+        const response = await fetch(`${BaseUrl}/auth/verifyToken`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        })
+    
+        return response.json()
+      } catch (error) {
+        throw new Error(error)
+      }
+}

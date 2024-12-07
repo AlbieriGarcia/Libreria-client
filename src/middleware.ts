@@ -1,6 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import jwt from 'jsonwebtoken';
+import {verifyToken} from '@/libs/Login/AuthRequest'
+
+export const config = {
+  matcher: ['/', '/books/:path*', '/home/:path*'],
+  runtime: 'nodejs', 
+}
 
 export function middleware(request: NextRequest) {
   
@@ -19,17 +24,20 @@ export function middleware(request: NextRequest) {
  
   try {
 
-    jwt.verify(token, secret);
+    verifyToken(token).then(response => {
+  
+      if(!response.success){
+        return NextResponse.redirect(new URL('/login', request.url));
+      }
 
-    
+    })
+
+
     return NextResponse.next();
   } catch (error) {
     
+    console.error('Error: ' + error);
     return NextResponse.redirect(new URL('/login', request.url));
   }
 }
 
-
-export const config = {
-  matcher: ['/', '/books/:path*'],
-}

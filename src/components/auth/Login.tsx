@@ -9,11 +9,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useForm } from "react-hook-form";  
+import { useForm } from "react-hook-form";
 import { signin } from "@/libs/Login/AuthRequest";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-
 
 const Login = () => {
   const router = useRouter();
@@ -24,14 +23,15 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
-  
   const onSubmit = (data: any) => {
     signin(data).then((response) => {
-      
-      if(response.success){
+      if (response.success) {
         toast.success(response.message);
 
-        router.push("/");
+        setTimeout(() => {
+          router.push("/home");
+        }, 1000);
+        
       } else {
         toast.error(response.message);
       }
@@ -62,8 +62,8 @@ const Login = () => {
                 message: "El email no es válido",
               },
             })}
-            error={!!errors.email}  
-            helperText={String(errors.email?.message ?? '')} 
+            error={!!errors.email}
+            helperText={String(errors.email?.message ?? "")}
           />
 
           <TextField
@@ -78,8 +78,8 @@ const Login = () => {
                 message: "La contraseña debe tener al menos 6 caracteres",
               },
             })}
-            error={!!errors.password}  
-            helperText={String(errors.password?.message ?? '')}  
+            error={!!errors.password}
+            helperText={String(errors.password?.message ?? "")}
           />
 
           <Button
