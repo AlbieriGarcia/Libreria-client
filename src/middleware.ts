@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-console.log('MIDDDELWN')
+import jwt from 'jsonwebtoken';
+
 export function middleware(request: NextRequest) {
   
   const token = request.cookies.get('Authorization')?.value;
@@ -9,8 +10,23 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
+  const secret = process.env.TOKEN_SECRET;
+
+  if (!secret) {
+    console.error('TOKEN_SECRET no está definido, debe de estar en el .env');
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
  
-  return NextResponse.next();
+  try {
+
+    jwt.verify(token, secret);
+
+    
+    return NextResponse.next();
+  } catch (error) {
+    
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 }
 
 

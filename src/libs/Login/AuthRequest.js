@@ -4,6 +4,7 @@ export const signin = async (params) => {
     try {
         const response = await fetch(`${BaseUrl}/auth/signin`, {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
