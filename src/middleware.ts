@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import {verifyToken} from '@/libs/Login/AuthRequest'
 
 export const config = {
-  matcher: ['/', '/books/:path*', '/home/:path*'],
+  matcher: [ '/books/:path*', '/home/:path*', '/my-books/:path*'],
   runtime: 'nodejs', 
 }
 

@@ -40,6 +40,22 @@ export const signup = async (params) => {
       }
 }
 
+export const signout = async () => {
+  try {
+      const response = await fetch(`${BaseUrl}/auth/signout`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+  
+      return response.json()
+    } catch (error) {
+      throw new Error(error)
+    }
+}
+
 export const verifyToken = async (token) => {
     try {
         const response = await fetch(`${BaseUrl}/auth/verifyToken`, {

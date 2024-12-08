@@ -26,6 +26,7 @@ const Login = () => {
   const onSubmit = (data: any) => {
     signin(data).then((response) => {
       if (response.success) {
+
         toast.success(response.message);
 
         setTimeout(() => {
@@ -73,10 +74,6 @@ const Login = () => {
             variant="outlined"
             {...register("password", {
               required: "La contraseña es obligatoria",
-              minLength: {
-                value: 6,
-                message: "La contraseña debe tener al menos 6 caracteres",
-              },
             })}
             error={!!errors.password}
             helperText={String(errors.password?.message ?? "")}
