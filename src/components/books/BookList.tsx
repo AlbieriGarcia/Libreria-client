@@ -10,10 +10,8 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 const BookList = () => {
   const filter = useAppSelector((state) => state.filterBookReducer);
   const [books, setBooks] = useState<Array<Book>>();
-  console.log(filter);
 
   useEffect(() => {
-    console.log("Estado")
     getBooks(filter).then((response) => {
       setBooks(response.data);
     });

@@ -5,24 +5,28 @@ export const getBooks = async (params) => {
 
   if (params.title !== "") {
     data = {
+      ...data,
       title: params.title,
     };
   }
 
   if (params.genre !== "") {
     data = {
+      ...data,
       genre: params.genre,
     };
   }
 
   if (params.author !== "") {
     data = {
+      ...data,
       author: params.author,
     };
   }
 
   if (params.year !== 0) {
     data = {
+      ...data,
       year: params.year,
     };
   }
@@ -35,6 +39,44 @@ export const getBooks = async (params) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+    });
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+// filtros
+
+export const getGenres = async () => {
+  try {
+    const response = await fetch(`${BaseUrl}/books/getGenres`, {
+      method: "GET",
+    });
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getAuthors = async () => {
+  try {
+    const response = await fetch(`${BaseUrl}/books/getAuthors`, {
+      method: "GET",
+    });
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getYears = async (params) => {
+  try {
+    const response = await fetch(`${BaseUrl}/books/getYears`, {
+      method: "GET",
     });
 
     return response.json();

@@ -6,11 +6,20 @@ export default {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  
   theme: {
     extend: {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+      },
+    },
+  },
+  variants: {
+    extend: {
+      scale: ["group-focus"], 
+      transitionProperty: {
+        'height': 'height',
       },
     },
   },
