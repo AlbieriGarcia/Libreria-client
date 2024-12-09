@@ -1,4 +1,5 @@
 import type {User} from './userTypes'
+import type {ReviewsDetail} from './reviewsTypes'
 
 export type Book = {
   _id: string;
@@ -13,5 +14,9 @@ export type Book = {
   userId: User;
   createdAt: string;
   updatedAt: string;
-  __v: number;
 };
+
+export type BooksDetail = {
+  bookDT: Book,
+  reviews?: Array<ReviewsDetail>
+}
