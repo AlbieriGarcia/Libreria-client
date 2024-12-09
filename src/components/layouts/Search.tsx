@@ -222,7 +222,7 @@ const Search = () => {
         </div>
         {isOpen && (
           <ClickAwayListener onClickAway={() => setIsOpen(false)}>
-            <div className="absolute top-10 flex flex-col items-start p-2 w-[400px] bg-slate-100 mt-3 rounded-lg border border-black">
+            <div className="absolute top-10 flex flex-col items-start p-2 w-[400px] bg-slate-100 mt-3 rounded-lg border border-black z-50">
               {filterData?.map((item, index) => (
                 <div
                   key={index}
@@ -239,6 +239,7 @@ const Search = () => {
                           ? Number(item)
                           : prevFilter.year,
                     }));
+                    setIsOpen(false)
                   }}
                 >
                   {item}
