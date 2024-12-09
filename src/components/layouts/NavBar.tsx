@@ -44,7 +44,7 @@ const NavBar = () => {
         <div className="relative">
           <Button
             variant="contained"
-            className="rounded-full w-[300px] bg-black hover:translate-y-[5px]  transition-transform"
+             className="rounded-full bg-black hover:translate-y-[5px] transition-transform lg:w-[300px] sm:w-[200px] xs:w-[150px]"
             onClick={handleMyBooks}
           >
             {path !== 'my-books' ? "Mis Libros" : "Todos los Libros"}
