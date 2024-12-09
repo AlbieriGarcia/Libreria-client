@@ -94,6 +94,32 @@ export const getMyBooks = async (params) => {
   }
 };
 
+export const insertBook = async (params) => {
+  try {
+    const response = await fetch(`${BaseUrl}/books/insertBook`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: params.title,
+        descripcion: params.descripcion,
+        author: params.author,
+        year: params.year,
+        genre: params.genre,
+        coverImage: params.coverImage,
+        rating: params.rating,
+        isFavorite: params.isFavorite,
+      }),
+    });
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 // filtros
 
 export const getGenres = async () => {

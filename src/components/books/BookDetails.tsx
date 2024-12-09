@@ -2,7 +2,6 @@ import type { BooksDetail } from "@/types/bookTypes";
 import { Avatar, Box, Rating, Typography } from "@mui/material";
 
 const BookDetails = ({ params }: { params: BooksDetail }) => {
-  console.log(params);
   return (
     <div className="p-4 max-w-screen-2xl mx-auto">
       <div className="flex flex-col md:flex-row gap-4">
