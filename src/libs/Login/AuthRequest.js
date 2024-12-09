@@ -61,7 +61,7 @@ export const verifyToken = async (token) => {
         const response = await fetch(`${BaseUrl}/auth/verifyToken`, {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `${token}`,
             'Content-Type': 'application/json',
         },
         })

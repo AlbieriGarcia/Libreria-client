@@ -4,17 +4,23 @@ import { useEffect, useState } from "react";
 import BookCard from "./BookCard";
 import type { Book } from "@/types/bookTypes";
 
-import { getBooks } from "@/libs/Books/BooksRequest";
+import { getBooks, getMyBooks } from "@/libs/Books/BooksRequest";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
-const BookList = () => {
+const BookList = ({from}: {from: string}) => {
   const filter = useAppSelector((state) => state.filterBookReducer);
   const [books, setBooks] = useState<Array<Book>>();
 
   useEffect(() => {
-    getBooks(filter).then((response) => {
-      setBooks(response.data);
-    });
+    if(from == 'home'){
+      getBooks(filter).then((response) => {
+        setBooks(response.data);
+      });
+    } else if (from == 'my-books'){
+      getMyBooks(filter).then((response) => {
+        setBooks(response.data);
+      });
+    }
   }, [filter]);
 
   return (

@@ -7,7 +7,7 @@ export const config = {
   runtime: 'nodejs', 
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   
   const token = request.cookies.get('Authorization')?.value;
 
@@ -21,16 +21,15 @@ export function middleware(request: NextRequest) {
     console.error('TOKEN_SECRET no está definido, debe de estar en el .env');
     return NextResponse.redirect(new URL('/login', request.url));
   }
+
  
   try {
 
-    verifyToken(token).then(response => {
-  
-      if(!response.success){
-        return NextResponse.redirect(new URL('/login', request.url));
-      }
+    const response = await verifyToken(token);
 
-    })
+    if (!response.success) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
 
 
     return NextResponse.next();

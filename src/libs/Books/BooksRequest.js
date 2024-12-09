@@ -47,6 +47,53 @@ export const getBooks = async (params) => {
   }
 };
 
+export const getMyBooks = async (params) => {
+  let data = {};
+
+  if (params.title !== "") {
+    data = {
+      ...data,
+      title: params.title,
+    };
+  }
+
+  if (params.genre !== "") {
+    data = {
+      ...data,
+      genre: params.genre,
+    };
+  }
+
+  if (params.author !== "") {
+    data = {
+      ...data,
+      author: params.author,
+    };
+  }
+
+  if (params.year !== 0) {
+    data = {
+      ...data,
+      year: params.year,
+    };
+  }
+
+  try {
+    const response = await fetch(`${BaseUrl}/books/getMyBooks`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 // filtros
 
 export const getGenres = async () => {
