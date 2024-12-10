@@ -6,9 +6,12 @@ import type { Book } from "@/types/bookTypes";
 
 import { getBooks, getMyBooks } from "@/libs/Books/BooksRequest";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { RootState } from "@/redux/store";
+
 
 const BookList = ({from}: {from: string}) => {
   const filter = useAppSelector((state) => state.filterBookReducer);
+  const updateState = useAppSelector((state: RootState) => state.updateComponentReducer.updateState);
   const [books, setBooks] = useState<Array<Book>>();
 
   useEffect(() => {
@@ -21,7 +24,7 @@ const BookList = ({from}: {from: string}) => {
         setBooks(response.data);
       });
     }
-  }, [filter]);
+  }, [filter, updateState]);
 
   return (
     <div className="flex justify-center">

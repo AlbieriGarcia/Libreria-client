@@ -2,13 +2,17 @@ import { Star, StarBorder } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import type { Book } from "@/types/bookTypes";
 import { JSX, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { setBookData } from "@/redux/features/bookDataSlice";
+import DeleteButton from "./DeleteButton";
 
 const BookCard = ({ params }: { params: Book }) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const pathName = usePathname();
+
+  const path = pathName.split("/")[1];
 
   const renderStars = () => {
     const stars = [];
@@ -69,22 +73,31 @@ const BookCard = ({ params }: { params: Book }) => {
 
   return (
     <div
-      className="border border-gray-300 rounded-lg p-5 w-[280px] h-[440px] bg-white shadow-md cursor-pointer transform transition-transform duration-300 hover:scale-105"
+      className="border border-gray-300 rounded-lg p-5 w-[280px] h-[460px] bg-white shadow-md cursor-pointer transform transition-transform duration-300 hover:scale-105"
       onClick={handleOpenDetails}
     >
-      <h2 className="text-xl font-semibold mb-1">{params.title}</h2>
-      <p className="text-gray-500 mb-1">{params.year}</p>
-      <div className="flex justify-start mb-2">
-        <div className="w-full h-[220px]">
-          <img
-            src={params.coverImage}
-            alt={params.title}
-            className="w-full h-full"
-          />
+      <div>
+        <h2 className="text-xl font-semibold mb-1">{params.title}</h2>
+        <p className="text-gray-500 mb-1">{params.year}</p>
+        <div className="flex justify-start mb-2">
+          <div className="w-full h-[220px]">
+            <img
+              src={params.coverImage}
+              alt={params.title}
+              className="w-full h-full"
+            />
+          </div>
         </div>
+        <div className="flex items-center">{renderStars()}</div>
+        <div className="text-gray-500">{renderGenre()}</div>
       </div>
-      <div className="flex items-center">{renderStars()}</div>
-      <div className="text-gray-500">{renderGenre()}</div>
+      {path == "my-books" ? (
+        <div className="flex justify-end gap-2 mt-3" onClick={(e) => e.stopPropagation()}>
+          <DeleteButton bookId={params._id} />
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };

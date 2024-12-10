@@ -120,6 +120,22 @@ export const insertBook = async (params) => {
   }
 };
 
+export const deleteBook = async (params) => {
+  try {
+    const response = await fetch(`${BaseUrl}/books/deleteBook?_id=${params}`, {
+      method: "DELETE",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 // filtros
 
 export const getGenres = async () => {
