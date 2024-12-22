@@ -1,5 +1,4 @@
-import { Star, StarBorder } from "@mui/icons-material";
-import { Button } from "@mui/material";
+import { Button, Rating } from "@mui/material";
 import type { Book } from "@/types/bookTypes";
 import { JSX } from "react";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,20 +12,6 @@ const BookCard = ({ params }: { params: Book }) => {
   const pathName = usePathname();
 
   const path = pathName.split("/")[1];
-
-  const renderStars = () => {
-    const stars = [];
-    for (let i = 0; i < params.rating; i++) {
-      stars.push(
-        i < params.rating ? (
-          <Star key={i} className="text-yellow-400" />
-        ) : (
-          <StarBorder key={i} className="text-yellow-400" />
-        )
-      );
-    }
-    return stars;
-  };
 
   const renderGenre = () => {
     const genres: JSX.Element[] = [];
@@ -88,11 +73,21 @@ const BookCard = ({ params }: { params: Book }) => {
             />
           </div>
         </div>
-        <div className="flex items-center">{renderStars()}</div>
+        <div className="flex items-center">
+          <Rating
+            name="user-rating"
+            value={params.rating}
+            precision={0.5}
+            readOnly
+          />
+        </div>
         <div className="text-gray-500">{renderGenre()}</div>
       </div>
       {path == "my-books" ? (
-        <div className="flex justify-end gap-2 mt-3" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="flex justify-end gap-2 mt-3"
+          onClick={(e) => e.stopPropagation()}
+        >
           <DeleteButton bookId={params._id} />
         </div>
       ) : (

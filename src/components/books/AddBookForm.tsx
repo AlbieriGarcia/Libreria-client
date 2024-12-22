@@ -110,21 +110,6 @@ const AddBookForm = () => {
           helperText={String(errors.coverImage?.message ?? "")}
         />
 
-        <TextField
-          label="Valoración"
-          fullWidth
-          margin="normal"
-          type="number"
-          inputProps={{ max: 5 }}
-          {...register("rating", {
-            required: "Este campo es obligatorio",
-            min: { value: 1, message: "Debe ser al menos 1" },
-            max: { value: 5, message: "Debe ser como máximo 5" },
-          })}
-          error={!!errors.rating}
-          helperText={String(errors.rating?.message ?? "")}
-        />
-
         <Button
           type="submit"
           fullWidth
