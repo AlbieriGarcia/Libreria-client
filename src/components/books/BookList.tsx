@@ -5,13 +5,13 @@ import BookCard from "./BookCard";
 import type { Book } from "@/types/bookTypes";
 
 import { getBooks, getMyBooks } from "@/libs/Books/BooksRequest";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import {  useAppSelector } from "@/redux/hooks";
 import { RootState } from "@/redux/store";
 
 
 const BookList = ({from}: {from: string}) => {
-  const filter = useAppSelector((state) => state.filterBookReducer);
-  const updateState = useAppSelector((state: RootState) => state.updateComponentReducer.updateState);
+  const filter = useAppSelector((state) => state.filterBookState);
+  const updateState = useAppSelector((state: RootState) => state.updateComponentState.updateState);
   const [books, setBooks] = useState<Array<Book>>();
 
   useEffect(() => {

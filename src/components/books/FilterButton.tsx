@@ -1,5 +1,5 @@
 import { Button } from "@mui/material"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
 
 const FilterButton = ({filterType, handleOpen, isOpen}: {filterType: string, handleOpen: () => void, isOpen: boolean}) => {

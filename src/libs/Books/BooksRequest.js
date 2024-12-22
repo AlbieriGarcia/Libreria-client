@@ -162,7 +162,7 @@ export const getAuthors = async () => {
   }
 };
 
-export const getYears = async (params) => {
+export const getYears = async () => {
   try {
     const response = await fetch(`${BaseUrl}/books/getYears`, {
       method: "GET",

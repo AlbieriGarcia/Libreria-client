@@ -1,7 +1,7 @@
 import { Star, StarBorder } from "@mui/icons-material";
 import { Button } from "@mui/material";
 import type { Book } from "@/types/bookTypes";
-import { JSX, useState } from "react";
+import { JSX } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { setBookData } from "@/redux/features/bookDataSlice";
