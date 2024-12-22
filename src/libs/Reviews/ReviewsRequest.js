@@ -21,6 +21,9 @@ export const insertReview = async (params) => {
     const response = await fetch(`${BaseUrl}/reviews/insertReview`, {
       method: "POST",
       credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         bookId: params.bookId,
         rating: params.rating,

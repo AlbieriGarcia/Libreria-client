@@ -1,11 +1,18 @@
 import { BooksDetail } from "@/types/bookTypes";
 import type { ReviewsDetail } from "@/types/reviewsTypes";
 import { Avatar, Button, Rating, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InsertReview from "./InsertReview";
 
 const ReviewBook = ({ params }: { params: BooksDetail }) => {
   const [open, setOpen] = useState(false);
+  const [reviews, setReviews] = useState<Array<ReviewsDetail>>([]);
+
+  useEffect(() => {
+    if(params.reviews){
+      setReviews(params.reviews)
+    }
+  }, [params])
 
   const handleClose = () => {
     setOpen(false)
@@ -13,7 +20,7 @@ const ReviewBook = ({ params }: { params: BooksDetail }) => {
 
   return (
     <>
-      <InsertReview handleClose={handleClose} open={open}/>
+      <InsertReview handleClose={handleClose} open={open} bookId={params.bookDT._id}/>
       <div className="mt-4 p-4 rounded-lg">
         <div className="flex justify-between pb-3">
           <Typography variant="h5" component="div" className="mb-3 font-bold">
@@ -27,8 +34,8 @@ const ReviewBook = ({ params }: { params: BooksDetail }) => {
             Agregar Review
           </Button>
         </div>
-        {params.reviews && params.reviews.length > 0 ? (
-          params.reviews.map((review: ReviewsDetail) => (
+        {reviews && reviews.length > 0 ? (
+          reviews.map((review: ReviewsDetail) => (
             <div
               key={review._id}
               className="flex items-start gap-4 p-4 bg-white border border-slate-300 rounded-lg shadow-md mb-4"

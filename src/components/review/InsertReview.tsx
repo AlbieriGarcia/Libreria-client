@@ -3,37 +3,63 @@ import { Button, Card, Modal, TextField, Typography } from "@mui/material";
 import StarComponent from "./StarComponent";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { insertReview } from "@/libs/Reviews/ReviewsRequest";
+import { useDispatch } from "react-redux";
+import { toggleUpdate } from "@/redux/features/updateComponentsSlice";
+import { ReviewsDetail } from "@/types/reviewsTypes";
 
 const InsertReview = ({
   open,
   handleClose,
+  bookId
 }: {
   open: boolean;
   handleClose: () => void;
+  bookId: string
 }) => {
+  const dispatch = useDispatch();
+
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const [star, setStars] = useState(0)
+  const [star, setStars] = useState(0);
 
   const handleStarSelect = (starNumber: number) => {
     setStars(starNumber);
   };
 
+  const handleReset = () => {
+    reset();
+    handleClose();
+  }
+
   const onSubmit = (data: any) => {
-   /*  const params = {
-      bookId: '',
-      rating: star,
-      comment: data.comment,
+    if (star < 1) {
+      toast.error("Debes de seleccionar almenos una estrella");
+    } else {
+      const params = {
+        bookId: bookId,
+        rating: star,
+        comment: data.comment,
+      };
+
+      insertReview(params).then((response) => {
+        if (response.success == true) {
+          dispatch(toggleUpdate());
+          toast.success(response.message);
+          handleReset()         
+        } else {
+          toast.error(response.message);
+        }
+      });
     }
-    insertReview(params).then(response => {
-      if(response)
-    }) */
-    
   };
+
 
   return (
     <Modal
@@ -42,10 +68,10 @@ const InsertReview = ({
       aria-describedby="modal-modal-description"
     >
       <div className="flex w-full h-full justify-center items-center">
-      <div className="relative w-full max-w-[800px] h-[600px] md:w-[700px] sm:w-[400px] xs:w-[320px] flex justify-center items-center">
+        <div className="relative w-full max-w-[800px] h-[600px] md:w-[700px] sm:w-[400px] xs:w-[320px] flex justify-center items-center">
           <div
             className="absolute cursor-pointer bg-black rounded-2xl text-white h-[40px] w-[40px] flex justify-center items-center top-[-10px] right-[-10px] hover:scale-105"
-            onClick={handleClose}
+            onClick={handleReset}
           >
             <Close className="text-[27px] font-bold transform hover:text-[23px]" />
           </div>
