@@ -2,9 +2,9 @@ import { Close } from "@mui/icons-material";
 import { Button, Card, Modal, TextField, Typography } from "@mui/material";
 import StarComponent from "./StarComponent";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { insertReview } from "@/libs/Reviews/ReviewsRequest";
+import { insertReview, updateReview } from "@/libs/Reviews/ReviewsRequest";
 import { useDispatch } from "react-redux";
 import { toggleUpdate } from "@/redux/features/updateComponentsSlice";
 import { ReviewsDetail } from "@/types/reviewsTypes";
@@ -12,29 +12,44 @@ import { ReviewsDetail } from "@/types/reviewsTypes";
 const InsertReview = ({
   open,
   handleClose,
-  bookId
+  bookId,
+  reviewData
 }: {
   open: boolean;
   handleClose: () => void;
   bookId: string
+  reviewData?:  ReviewsDetail
 }) => {
   const dispatch = useDispatch();
+  const [star, setStars] = useState(0);
 
   const {
     register,
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues : {
+      comment: ''
+    }
+  });
 
-  const [star, setStars] = useState(0);
+  useEffect(() => {
+    if(open && reviewData){
+      reset({
+        comment: reviewData.comment
+      })
+
+      setStars(reviewData.rating)
+    }
+  }, [reviewData, reset])
 
   const handleStarSelect = (starNumber: number) => {
     setStars(starNumber);
   };
 
   const handleReset = () => {
-    reset();
+    reset({comment: ''});
     handleClose();
   }
 
@@ -46,17 +61,36 @@ const InsertReview = ({
         bookId: bookId,
         rating: star,
         comment: data.comment,
+        reviewId: reviewData?._id
       };
 
-      insertReview(params).then((response) => {
-        if (response.success == true) {
-          dispatch(toggleUpdate());
-          toast.success(response.message);
-          handleReset()         
-        } else {
-          toast.error(response.message);
-        }
-      });
+      // Editar Review
+      if(reviewData) {
+        updateReview(params).then((response) => {
+          if (response.success == true) {
+            dispatch(toggleUpdate());
+            toast.success(response.message);
+            handleReset()         
+          } else {
+            toast.error(response.message);
+          }
+        });
+
+      } else {
+
+        // Agregar Review
+        insertReview(params).then((response) => {
+          if (response.success == true) {
+            dispatch(toggleUpdate());
+            toast.success(response.message);
+            handleReset()         
+          } else {
+            toast.error(response.message);
+          }
+        });
+
+      }
+
     }
   };
 
@@ -81,7 +115,7 @@ const InsertReview = ({
                 Review
               </Typography>
               <div className="flex justify-center items-center w-[600px] h-[80px]">
-                <StarComponent startSelected={handleStarSelect} />
+                <StarComponent startSelected={handleStarSelect} startQty={reviewData?.rating}/>
               </div>
               <Typography variant="h5" component="h3" className="mt-4">
                 {"Pelicula"}

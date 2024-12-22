@@ -1,8 +1,8 @@
 import { Star } from "@mui/icons-material";
-import { useState } from "react";
+import {  useState } from "react";
 
-const StarComponent = ({startSelected} : {startSelected: (num: number) => void}) => {
-  const [calification, setCalification] = useState(0);
+const StarComponent = ({startSelected, startQty = 0} : {startSelected: (num: number) => void, startQty?: number}) => {
+  const [calification, setCalification] = useState(startQty);
 
   const handleStarsSelected = (starNumber: number) => {
     setCalification(starNumber);

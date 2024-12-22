@@ -37,3 +37,26 @@ export const insertReview = async (params) => {
     throw new Error(error);
   }
 };
+
+export const updateReview = async (params) => {
+  try {
+    const response = await fetch(`${BaseUrl}/reviews/updateReview?_id=${params.reviewId}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        bookId: params.bookId,
+        rating: params.rating,
+        comment: params.comment,
+        wasEdited: true,
+      }),
+    });
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
