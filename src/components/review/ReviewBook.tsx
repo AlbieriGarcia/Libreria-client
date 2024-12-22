@@ -3,6 +3,10 @@ import type { ReviewsDetail } from "@/types/reviewsTypes";
 import { Avatar, Button, IconButton, Rating, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import InsertReview from "./InsertReview";
+import { deleteReview } from "@/libs/Reviews/ReviewsRequest";
+import { useDispatch } from "react-redux";
+import { toggleUpdate } from "@/redux/features/updateComponentsSlice";
+import toast from "react-hot-toast";
 
 const defaultEditvalue = {
   _id: "",
@@ -21,6 +25,8 @@ const defaultEditvalue = {
 };
 
 const ReviewBook = ({ params }: { params: BooksDetail }) => {
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
   const [reviews, setReviews] = useState<Array<ReviewsDetail>>([]);
   const [editData, setEditData] = useState<ReviewsDetail>(defaultEditvalue);
@@ -34,6 +40,18 @@ const ReviewBook = ({ params }: { params: BooksDetail }) => {
         setOpen(true);
       }
     }
+  };
+
+  const handdleDeleteReview = (bookId: string) => {
+    console.log(bookId)
+    deleteReview(bookId).then((response) => {
+      if (response.success == true) {
+        dispatch(toggleUpdate());
+        toast.success(response.message);
+      } else {
+        toast.error(response.message);
+      }
+    });
   };
 
   useEffect(() => {
@@ -131,6 +149,9 @@ const ReviewBook = ({ params }: { params: BooksDetail }) => {
                       <Button
                         variant="contained"
                         className="rounded-full bg-black hover:translate-y-[-5px] hover:translate-x-[5px] transition-transform"
+                        onClick={() => {
+                          handdleDeleteReview(review._id);
+                        }}
                       >
                         Eliminar
                       </Button>

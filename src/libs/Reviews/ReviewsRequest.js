@@ -22,7 +22,7 @@ export const insertReview = async (params) => {
       method: "POST",
       credentials: "include",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         bookId: params.bookId,
@@ -40,19 +40,22 @@ export const insertReview = async (params) => {
 
 export const updateReview = async (params) => {
   try {
-    const response = await fetch(`${BaseUrl}/reviews/updateReview?_id=${params.reviewId}`, {
-      method: "PUT",
-      credentials: "include",
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        bookId: params.bookId,
-        rating: params.rating,
-        comment: params.comment,
-        wasEdited: true,
-      }),
-    });
+    const response = await fetch(
+      `${BaseUrl}/reviews/updateReview?_id=${params.reviewId}`,
+      {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          bookId: params.bookId,
+          rating: params.rating,
+          comment: params.comment,
+          wasEdited: true,
+        }),
+      }
+    );
 
     return response.json();
   } catch (error) {
@@ -60,3 +63,18 @@ export const updateReview = async (params) => {
   }
 };
 
+export const deleteReview = async (params) => {
+  try {
+    const response = await fetch(
+      `${BaseUrl}/reviews/deleteReview?_id=${params}`,
+      {
+        method: "DELETE",
+        credentials: "include",
+      }
+    );
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};

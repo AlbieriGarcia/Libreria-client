@@ -65,7 +65,7 @@ const InsertReview = ({
       };
 
       // Editar Review
-      if(reviewData) {
+      if(reviewData?._id !== '') {
         updateReview(params).then((response) => {
           if (response.success == true) {
             dispatch(toggleUpdate());
