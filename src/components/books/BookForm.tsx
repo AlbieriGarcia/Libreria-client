@@ -2,30 +2,72 @@
 
 import { Button, TextField, Box, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
-import { insertBook } from "@/libs/Books/BooksRequest";
+import { insertBook, updateBook } from "@/libs/Books/BooksRequest";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Book } from "@/types/bookTypes";
+import { useEffect } from "react";
 
-const AddBookForm = () => {
+const BookForm = ({ type, data }: { type: string; data?: Book }) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      title: "",
+      descripcion: "",
+      author: "",
+      year: "",
+      genre: "",
+      coverImage: "",
+      _id: "",
+      isFavorite: false,
+    },
+  });
 
   const router = useRouter();
 
+  useEffect(() => {
+    if (data) {
+      reset({
+        _id: data._id,
+        title: data.title,
+        descripcion: data.descripcion,
+        author: data.author,
+        year: String(data.year),
+        genre: data.genre[0],
+        coverImage: data.coverImage,
+        isFavorite: data.isFavorite,
+      });
+    }
+  }, [data, reset]);
+
   const onSubmit = (data: any) => {
+    if (!data) {
+      insertBook(data).then((response) => {
+        if (response.success) {
+          toast.success(response.message);
 
-    insertBook(data).then((response) => {
-      if (response.success) {
-        toast.success(response.message);
+          router.push("/my-books");
+        } else {
+          toast.error(response.message);
+        }
+      });
+    } else {
+      updateBook(data).then((response) => {
+        if (response.success) {
+          toast.success(response.message);
 
-        router.push("/my-books");
-      } else {
-        toast.error(response.message);
-      }
-    });
+          router.push("/my-books");
+        } else {
+          toast.error(response.message);
+        }
+      });
+    }
+
+    reset();
   };
 
   return (
@@ -49,13 +91,14 @@ const AddBookForm = () => {
         }}
       >
         <Typography variant="h5" gutterBottom>
-          Agregar Libro
+          {type === "add" ? "Agregar Libro" : "Editar Libro"}
         </Typography>
 
         <TextField
           label="Título"
           fullWidth
           margin="normal"
+          slotProps={{ inputLabel: { shrink: true } }}
           {...register("title", { required: "Este campo es obligatorio" })}
           error={!!errors.title}
           helperText={String(errors.title?.message ?? "")}
@@ -65,6 +108,7 @@ const AddBookForm = () => {
           label="Descripción"
           fullWidth
           margin="normal"
+          slotProps={{ inputLabel: { shrink: true } }}
           {...register("descripcion", {
             required: "Este campo es obligatorio",
           })}
@@ -76,6 +120,7 @@ const AddBookForm = () => {
           label="Autor"
           fullWidth
           margin="normal"
+          slotProps={{ inputLabel: { shrink: true } }}
           {...register("author", { required: "Este campo es obligatorio" })}
           error={!!errors.author}
           helperText={String(errors.author?.message ?? "")}
@@ -87,6 +132,7 @@ const AddBookForm = () => {
           margin="normal"
           inputProps={{ min: 1 }}
           type="number"
+          slotProps={{ inputLabel: { shrink: true } }}
           {...register("year", { required: "Este campo es obligatorio" })}
           error={!!errors.year}
           helperText={String(errors.year?.message ?? "")}
@@ -96,6 +142,7 @@ const AddBookForm = () => {
           label="Género"
           fullWidth
           margin="normal"
+          slotProps={{ inputLabel: { shrink: true } }}
           {...register("genre", { required: "Este campo es obligatorio" })}
           error={!!errors.genre}
           helperText={String(errors.genre?.message ?? "")}
@@ -105,6 +152,7 @@ const AddBookForm = () => {
           label="Imagen de portada"
           fullWidth
           margin="normal"
+          slotProps={{ inputLabel: { shrink: true } }}
           {...register("coverImage", { required: "Este campo es obligatorio" })}
           error={!!errors.coverImage}
           helperText={String(errors.coverImage?.message ?? "")}
@@ -117,11 +165,11 @@ const AddBookForm = () => {
           className="bg-black"
           sx={{ marginTop: 2 }}
         >
-          Agregar Libro
+          {type === "add" ? "Agregar Libro" : "Actualizar Libro"}
         </Button>
       </Box>
     </Box>
   );
 };
 
-export default AddBookForm;
+export default BookForm;

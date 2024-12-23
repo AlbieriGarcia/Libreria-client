@@ -1,10 +1,11 @@
-import { Button, Rating } from "@mui/material";
+import { Button, IconButton, Rating } from "@mui/material";
 import type { Book } from "@/types/bookTypes";
 import { JSX } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { setBookData } from "@/redux/features/bookDataSlice";
 import DeleteButton from "./DeleteButton";
+import { Edit } from "@mui/icons-material";
 
 const BookCard = ({ params }: { params: Book }) => {
   const dispatch = useAppDispatch();
@@ -31,7 +32,8 @@ const BookCard = ({ params }: { params: Book }) => {
     return genres;
   };
 
-  const handleOpenDetails = () => {
+  const handleNavigate = (type: string) => {
+ 
     dispatch(
       setBookData({
         _id: params._id ?? "",
@@ -53,13 +55,19 @@ const BookCard = ({ params }: { params: Book }) => {
       })
     );
 
-    router.push("/details");
+    if(type == "details"){
+      router.push("/details");
+    }
+    else{
+      router.push("/edit");
+    }
+    
   };
 
   return (
     <div
       className="border border-gray-300 rounded-lg p-5 w-[280px] h-[460px] bg-white shadow-md cursor-pointer transform transition-transform duration-300 hover:scale-105"
-      onClick={handleOpenDetails}
+      onClick={() => { handleNavigate("details")}}
     >
       <div>
         <h2 className="text-xl font-semibold mb-1">{params.title}</h2>
@@ -84,11 +92,15 @@ const BookCard = ({ params }: { params: Book }) => {
         <div className="text-gray-500">{renderGenre()}</div>
       </div>
       {path == "my-books" ? (
-        <div
-          className="flex justify-end gap-2 mt-3"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <DeleteButton bookId={params._id} />
+        <div className="flex justify-end gap-2 mt-3">
+          <div onClick={(e) => e.stopPropagation()}>
+            <DeleteButton bookId={params._id} />
+          </div>
+          <div onClick={(e) => e.stopPropagation()}>
+            <IconButton onClick={() => { handleNavigate("edit")}} className="">
+              <Edit className="text-3xl text-blue-500" />
+            </IconButton>
+          </div>
         </div>
       ) : (
         <></>

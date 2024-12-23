@@ -1,7 +1,7 @@
-import AddBookForm from "@/components/books/AddBookForm";
+import BookForm from "@/components/books/BookForm";
 
 export default function addPage() {
     return(
-        <AddBookForm />
+        <BookForm type="add"/>
     )
 }

@@ -120,6 +120,32 @@ export const insertBook = async (params) => {
   }
 };
 
+export const updateBook = async (params) => {
+  try {
+    const response = await fetch(`${BaseUrl}/books/updateBook?_id=${params._id}`, {
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: params.title,
+        descripcion: params.descripcion,
+        author: params.author,
+        year: params.year,
+        genre: params.genre,
+        coverImage: params.coverImage,
+        rating: params.rating,
+        isFavorite: params.isFavorite,
+      }),
+    });
+
+    return response.json();
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 export const deleteBook = async (params) => {
   try {
     const response = await fetch(`${BaseUrl}/books/deleteBook?_id=${params}`, {
