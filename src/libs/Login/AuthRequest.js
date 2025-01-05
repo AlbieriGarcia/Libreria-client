@@ -58,16 +58,16 @@ export const signout = async () => {
 
 export const verifyToken = async (token) => {
     try {
-        const response = await fetch(`${BaseUrl}/auth/verifyToken`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `${token}`,
-            'Content-Type': 'application/json',
-        },
-        })
-    
-        return response.json()
-      } catch (error) {
-        throw new Error(error)
-      }
+    const response = await fetch(`${BaseUrl}/auth/verifyToken`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `${token}`,
+        'Content-Type': 'application/json',
+    },
+    })
+
+    return response.json()
+  } catch (error) {
+    throw new Error(error)
+  }
 }

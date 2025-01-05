@@ -1,5 +1,6 @@
 import type {User} from './userTypes'
 import type {ReviewsDetail} from './reviewsTypes'
+import { Favorite } from './favoriteType';
 
 export type Book = {
   _id: string;
@@ -10,7 +11,7 @@ export type Book = {
   genre: string[];
   coverImage: string;
   rating: number;
-  isFavorite: boolean;
+  favorite?: Favorite;
   userId: User;
   createdAt: string;
   updatedAt: string;

@@ -5,7 +5,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { setBookData } from "@/redux/features/bookDataSlice";
 import DeleteButton from "./DeleteButton";
-import { Edit } from "@mui/icons-material";
+import { Edit, Favorite, FavoriteBorder } from "@mui/icons-material";
+import { setFavorite } from "@/libs/Books/FavoritesRequest";
+import { toggleUpdate } from "@/redux/features/updateComponentsSlice";
+import { motion } from "framer-motion";
 
 const BookCard = ({ params }: { params: Book }) => {
   const dispatch = useAppDispatch();
@@ -33,7 +36,6 @@ const BookCard = ({ params }: { params: Book }) => {
   };
 
   const handleNavigate = (type: string) => {
- 
     dispatch(
       setBookData({
         _id: params._id ?? "",
@@ -44,7 +46,11 @@ const BookCard = ({ params }: { params: Book }) => {
         genre: params.genre ?? [""],
         coverImage: params.coverImage ?? "",
         rating: params.rating ?? 0,
-        isFavorite: params.isFavorite ?? false,
+        favorite: {
+          _id: params.favorite?._id ?? "",
+          isFavorite: params.favorite?.isFavorite ?? false,
+          bookId: params.favorite?.bookId ?? "",
+        },
         userId: {
           _id: params.userId?._id ?? "",
           email: params.userId?.email ?? "",
@@ -55,19 +61,33 @@ const BookCard = ({ params }: { params: Book }) => {
       })
     );
 
-    if(type == "details"){
+    if (type == "details") {
       router.push("/details");
-    }
-    else{
+    } else {
       router.push("/edit");
     }
-    
+  };
+
+  const handleSetFavorite = () => {
+    const data = {
+      bookId: params.favorite?.bookId ?? params._id,
+      favoriteId: params.favorite?._id,
+      isFavorite: !params.favorite?.isFavorite,
+    };
+
+    setFavorite(data).then((response) => {
+      if (response.success) {
+        dispatch(toggleUpdate());
+      }
+    });
   };
 
   return (
     <div
-      className="border border-gray-300 rounded-lg p-5 w-[280px] h-[460px] bg-white shadow-md cursor-pointer transform transition-transform duration-300 hover:scale-105"
-      onClick={() => { handleNavigate("details")}}
+      className="border border-gray-300 rounded-lg p-5 w-[280px] h-[460px] bg-white shadow-md cursor-pointer"
+      onClick={() => {
+        handleNavigate("details");
+      }}
     >
       <div>
         <h2 className="text-xl font-semibold mb-1">{params.title}</h2>
@@ -91,19 +111,57 @@ const BookCard = ({ params }: { params: Book }) => {
         </div>
         <div className="text-gray-500">{renderGenre()}</div>
       </div>
-      {path == "my-books" ? (
+      {path == "home" ? (
+        <div className="flex justify-end gap-2 mt-3">
+          <div onClick={(e) => e.stopPropagation()}>
+            <motion.div
+              onClick={() => {
+                handleSetFavorite();
+              }}
+              animate={
+                params.favorite?.isFavorite
+                  ? {
+                      scale: [1, 1.2, 1],
+                    }
+                  : { scale: [1] }
+              }
+              transition={{
+                duration: 0.6,
+                repeat: params.favorite?.isFavorite ? 1 : 0,
+                repeatType: "loop",
+              }}
+              style={{
+                fontSize: "3rem",
+                color: "red",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              {params.favorite?.isFavorite ? (
+                <Favorite className="text-3xl text-red-500" />
+              ) : (
+                <FavoriteBorder className="text-3xl text-gray-800 hover:text-red-500" />
+              )}
+            </motion.div>
+          </div>
+        </div>
+      ) : (
         <div className="flex justify-end gap-2 mt-3">
           <div onClick={(e) => e.stopPropagation()}>
             <DeleteButton bookId={params._id} />
           </div>
           <div onClick={(e) => e.stopPropagation()}>
-            <IconButton onClick={() => { handleNavigate("edit")}} className="">
+            <IconButton
+              onClick={() => {
+                handleNavigate("edit");
+              }}
+              className=""
+            >
               <Edit className="text-3xl text-blue-500" />
             </IconButton>
           </div>
         </div>
-      ) : (
-        <></>
       )}
     </div>
   );

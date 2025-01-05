@@ -11,7 +11,11 @@ export const BookDataSlice = createSlice({
     genre: [""],
     coverImage: "",
     rating: 0,
-    isFavorite: false,
+    favorite: {
+      _id: "",
+      isFavorite: false,
+      bookId: "",
+    },
     userId: {
       _id: "",
       email: "",
@@ -32,7 +36,11 @@ export const BookDataSlice = createSlice({
         genre: string[];
         coverImage: string;
         rating: number;
-        isFavorite: boolean;
+        favorite: {
+          _id: string;
+          isFavorite: boolean;
+          bookId: string;
+        };
         userId: {
           _id: string;
           email: string;
@@ -51,7 +59,7 @@ export const BookDataSlice = createSlice({
         genre,
         coverImage,
         rating,
-        isFavorite,
+        favorite,
         userId,
         createdAt,
         updatedAt,
@@ -65,7 +73,7 @@ export const BookDataSlice = createSlice({
       state.genre = genre;
       state.coverImage = coverImage;
       state.rating = rating;
-      state.isFavorite = isFavorite;
+      state.favorite = favorite;
       state.userId = userId;
       state.createdAt = createdAt;
       state.updatedAt = updatedAt;

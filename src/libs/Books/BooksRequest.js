@@ -110,7 +110,6 @@ export const insertBook = async (params) => {
         genre: params.genre,
         coverImage: params.coverImage,
         rating: params.rating,
-        isFavorite: params.isFavorite,
       }),
     });
 
@@ -136,7 +135,6 @@ export const updateBook = async (params) => {
         genre: params.genre,
         coverImage: params.coverImage,
         rating: params.rating,
-        isFavorite: params.isFavorite,
       }),
     });
 

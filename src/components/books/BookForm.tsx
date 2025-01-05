@@ -23,7 +23,11 @@ const BookForm = ({ type, data }: { type: string; data?: Book }) => {
       genre: "",
       coverImage: "",
       _id: "",
-      isFavorite: false,
+      favorite: {
+        _id: "",
+        isFavorite: false,
+        bookId: "",
+      },
     },
   });
 
@@ -39,7 +43,11 @@ const BookForm = ({ type, data }: { type: string; data?: Book }) => {
         year: String(data.year),
         genre: data.genre[0],
         coverImage: data.coverImage,
-        isFavorite: data.isFavorite,
+        favorite: {
+          _id: data.favorite?._id,
+          isFavorite: data.favorite?.isFavorite,
+          bookId: data.favorite?.bookId,
+        },
       });
     }
   }, [data, reset]);
