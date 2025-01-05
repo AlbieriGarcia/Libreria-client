@@ -1,5 +1,6 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import filterBookReducer from "./features/filterBookSlice";
+import bookQtyReducer from "./features/bookQtySlice";
 import bookDataReducer from "./features/bookDataSlice";
 import updateComponentReducer from "./features/updateComponentsSlice";
 import { persistReducer, persistStore } from "redux-persist";
@@ -21,6 +22,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   filterBookState: filterBookReducer,
+  bookQtyState: bookQtyReducer,
   bookDataState: bookDataReducer,
   updateComponentState: updateComponentReducer,
 });

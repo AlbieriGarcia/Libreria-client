@@ -3,36 +3,36 @@ import { BaseUrl } from "@/libs/ApiConfi";
 export const getBooks = async (params) => {
   let data = {};
 
-  if (params.title !== "") {
+  if (params.filter.title !== "") {
     data = {
       ...data,
-      title: params.title,
+      title: params.filter.title,
     };
   }
 
-  if (params.genre !== "") {
+  if (params.filter.genre !== "") {
     data = {
       ...data,
-      genre: params.genre,
+      genre: params.filter.genre,
     };
   }
 
-  if (params.author !== "") {
+  if (params.filter.author !== "") {
     data = {
       ...data,
-      author: params.author,
+      author: params.filter.author,
     };
   }
 
-  if (params.year !== 0) {
+  if (params.filter.year !== 0) {
     data = {
       ...data,
-      year: params.year,
+      year: params.filter.year,
     };
   }
 
   try {
-    const response = await fetch(`${BaseUrl}/books/getBooks`, {
+    const response = await fetch(`${BaseUrl}/books/getBooks?bookQt=${params.bookQt}&page=${params.page}`, {
       method: "POST",
       credentials: "include",
       headers: {
@@ -50,36 +50,36 @@ export const getBooks = async (params) => {
 export const getMyBooks = async (params) => {
   let data = {};
 
-  if (params.title !== "") {
+  if (params.filter.title !== "") {
     data = {
       ...data,
-      title: params.title,
+      title: params.filter.title,
     };
   }
 
-  if (params.genre !== "") {
+  if (params.filter.genre !== "") {
     data = {
       ...data,
-      genre: params.genre,
+      genre: params.filter.genre,
     };
   }
 
-  if (params.author !== "") {
+  if (params.filter.author !== "") {
     data = {
       ...data,
-      author: params.author,
+      author: params.filter.author,
     };
   }
 
-  if (params.year !== 0) {
+  if (params.filter.year !== 0) {
     data = {
       ...data,
-      year: params.year,
+      year: params.filter.year,
     };
   }
 
   try {
-    const response = await fetch(`${BaseUrl}/books/getMyBooks`, {
+    const response = await fetch(`${BaseUrl}/books/getMyBooks?bookQt=${params.bookQt}&page=${params.page}`, {
       method: "POST",
       credentials: "include",
       headers: {
