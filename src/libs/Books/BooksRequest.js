@@ -197,3 +197,72 @@ export const getYears = async () => {
     throw new Error(error);
   }
 };
+
+// export csv file
+
+export const getExportCsvBook = async (params) => {
+  let data = {};
+
+  if (params.filter.title !== "") {
+    data = {
+      ...data,
+      title: params.filter.title,
+    };
+  }
+
+  if (params.filter.genre !== "") {
+    data = {
+      ...data,
+      genre: params.filter.genre,
+    };
+  }
+
+  if (params.filter.author !== "") {
+    data = {
+      ...data,
+      author: params.filter.author,
+    };
+  }
+
+  if (params.filter.year !== 0) {
+    data = {
+      ...data,
+      year: params.filter.year,
+    };
+  }
+
+  data = {
+    ...data,
+    getAll: params.getAll
+  }
+
+  try {
+    const response = await fetch(`${BaseUrl}/books/getExportCsvBook?bookQt=${params.bookQt}&page=${params.page}`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al generar el CSV: ${response.statusText}`);
+    }
+
+    const blob = await response.blob();
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "booksData.csv"; 
+    document.body.appendChild(a);
+    a.click();
+
+    a.remove();
+    window.URL.revokeObjectURL(url);
+
+  } catch (error) {
+    throw new Error(error);
+  }
+};

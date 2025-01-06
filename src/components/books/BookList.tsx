@@ -10,7 +10,7 @@ import { RootState } from "@/redux/store";
 import { Pagination } from "@mui/material";
 import { Page } from "@/types/pageType";
 import QuantitiesButton from "./QuantitiesButton";
-
+import ExportCsv from "./ExportCsv";
 
 const BookList = ({ from }: { from: string }) => {
   const filter = useAppSelector((state) => state.filterBookState);
@@ -53,12 +53,15 @@ const BookList = ({ from }: { from: string }) => {
     setPage(value);
   };
 
-
+  
   return (
     <div className="flex flex-col items-center">
       <div className="flex justify-between w-full max-w-6xl my-4">
         <div className="flex justify-start w-1/2 ml-3 relative">
           <QuantitiesButton />
+          <div className="flex justify-center items-center ml-4">
+            <ExportCsv filter={filter} page={page} bookQt={bookQtyState.bookQty}/>
+          </div>
         </div>
 
         <div className="flex justify-end w-1/2 mr-2">
