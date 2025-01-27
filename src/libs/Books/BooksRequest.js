@@ -109,7 +109,6 @@ export const insertBook = async (params) => {
         year: params.year,
         genre: params.genre,
         coverImage: params.coverImage,
-        rating: params.rating,
       }),
     });
 

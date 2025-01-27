@@ -52,9 +52,9 @@ const BookForm = ({ type, data }: { type: string; data?: Book }) => {
     }
   }, [data, reset]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (bookData: any) => {
     if (!data) {
-      insertBook(data).then((response) => {
+      insertBook(bookData).then((response) => {
         if (response.success) {
           toast.success(response.message);
 
@@ -64,7 +64,7 @@ const BookForm = ({ type, data }: { type: string; data?: Book }) => {
         }
       });
     } else {
-      updateBook(data).then((response) => {
+      updateBook(bookData).then((response) => {
         if (response.success) {
           toast.success(response.message);
 
