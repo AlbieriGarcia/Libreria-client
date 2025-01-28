@@ -9,7 +9,7 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import { useAppDispatch } from "@/redux/hooks";
 import { setAllFilters } from "@/redux/features/filterBookSlice";
-import { useEffect, useState } from "react";
+import { ChangeEvent, SetStateAction, useEffect, useRef, useState } from "react";
 import { getAuthors, getGenres, getYears } from "@/libs/Books/BooksRequest";
 
 type bookFilter = {
@@ -34,6 +34,9 @@ const Search = () => {
   const [currentFilter, setCurrentFilter] = useState<
     "genre" | "author" | "year" | ""
   >("");
+  
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const [debounceChange, setDebounceChange] = useState(false)
 
   const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -51,6 +54,24 @@ const Search = () => {
       })
     );
   };
+
+  //Debounce
+  useEffect(() => {
+    handleFilter()
+  }, [debounceChange])
+
+  const onQueryChanged = ( event: ChangeEvent<HTMLInputElement> ) => {
+    
+    if (debounceRef.current){
+      clearTimeout( debounceRef.current )
+    }
+    
+    setLocalFilter({ ...localFilter, title: event.target.value })
+
+    debounceRef.current = setTimeout(() => {
+      setDebounceChange(prev => !prev)
+    }, 1000)
+  }
 
   useEffect(() => {
     handleFilter();
@@ -90,9 +111,7 @@ const Search = () => {
           <TextField
             type="text"
             value={localFilter.title}
-            onChange={(e) => {
-              setLocalFilter({ ...localFilter, title: e.target.value });
-            }}
+            onChange={onQueryChanged}
             onKeyDown={handleEnter}
             className="rounded-md p-3 w-full"
             variant="standard"
